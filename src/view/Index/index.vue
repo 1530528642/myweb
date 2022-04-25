@@ -37,11 +37,14 @@
         </el-menu-item>
       </el-menu>
       <router-view/>
+      <button @click="sotoken">请求token是否过期</button>
     <!-- </el-col>
   </el-row> -->
 </template>
 
 <script lang="ts" setup>
+import axios from "axios"
+import { ElMessage } from 'element-plus'
 import {
   Location,
   Document,
@@ -53,6 +56,20 @@ const handleOpen = (key: string, keyPath: string[]) => {
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+}
+
+const sotoken = () => {
+    axios.post('users/getpage', {}).then(function(response){
+                if (response.data.status !== 200) {
+                    ElMessage(response.data.msg)
+                } else {
+                    ElMessage(response.data.msg)
+                    
+                }
+        })
+        .catch(function(err){
+           console.log(err)
+    })
 }
 </script>
 

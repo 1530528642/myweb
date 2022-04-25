@@ -37,6 +37,9 @@ import { ref, reactive} from "vue"
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import axios from "axios"
+import { useRouter } from 'vue-router'
+let router = useRouter()
+
 const ruleFormRef = ref<FormInstance>()
 
 const ruleForm = reactive({
@@ -55,8 +58,12 @@ const submitForm = (formEl: FormInstance | undefined, type: number) => {
         if (valid) {
           if(type === 1){
               axios.post('users/bar', ruleForm).then(function(response){
-                if (response.data.length === 0) {
-                    ElMessage('账户或密码错误')
+                if (response.data.status !== 200) {
+                    ElMessage(response.data.msg)
+                } else {
+                    ElMessage(response.data.msg)
+                    localStorage.setItem('token', response.data.token)
+                    router.push('/index')
                 }
               })
               .catch(function(err){

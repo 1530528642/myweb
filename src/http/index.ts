@@ -9,21 +9,24 @@
 import axios from 'axios';
 import qs from "qs";
 import { ElMessage } from 'element-plus'
-
+import { useRouter } from 'vue-router'
+console.log(useRouter())
+const router = useRouter()
 //数据请求字符
 axios.defaults.baseURL = '/api/',
   // 如果请求话费了超过 `timeout` 的时间，请求将被中断
 axios.defaults.timeout = 5000;
 // 表示跨域请求时是否需要使用凭证
 axios.defaults.withCredentials = false;
-// axios.defaults.headers.common['token'] =  AUTH_TOKEN
+axios.defaults.headers.common['token'] =  ''
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 // 允许跨域
 axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*";
 
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
-  console.log(config.method)
+  let token = localStorage.getItem('token') || ''
+  config.headers!.Authorization = token
   if (
     config.method === "post" ||
     config.method === "put" ||
@@ -42,7 +45,13 @@ axios.interceptors.request.use(function (config) {
 // 响应拦截器
 axios.interceptors.response.use(function (config) {
   if (config.status === 200 || config.status === 204) {
-    return Promise.resolve(config);
+    console.log(config.data.status)
+    if(config.data.status === 300){
+      console.log(router)
+      router.push('/Login')
+    } else {
+      return Promise.resolve(config);
+    }
   } else {
     return Promise.reject(config);
   }
