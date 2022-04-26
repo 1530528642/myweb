@@ -19,7 +19,8 @@ axios.defaults.timeout = 5000;
 // 表示跨域请求时是否需要使用凭证
 axios.defaults.withCredentials = false;
 axios.defaults.headers.common['token'] =  ''
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+// axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 // 允许跨域
 axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*";
 
@@ -65,7 +66,7 @@ axios.interceptors.response.use(function (config) {
 
         // 401: 未登录
         // 未登录则跳转登录页面，并携带当前页面的路径
-        // 在登录成功后返回当前页面，这一步需要在登录页操作。                
+        // 在登录成功后返回当前页面，这一步需要在登录页操作。
         case 401: //重定向
           ElMessage.error("token:登录失效==>")
           // ElMessage.error("token:登录失效==>" + error.response.status + ":" + store.state.Roles)
@@ -74,11 +75,11 @@ axios.interceptors.response.use(function (config) {
           // router.replace({
           //   path: '/Login',
           // });
-          break; 
+          break;
         // 403 token过期
         // 登录过期对用户进行提示
         // 清除本地token和清空vuex中token对象
-        // 跳转登录页面                
+        // 跳转登录页面
         case 403:
           ElMessage.error("用户得到授权，但是访问是被禁止的==>" + error.response.status)
           break;
