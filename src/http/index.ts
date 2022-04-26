@@ -10,7 +10,7 @@ import axios from 'axios';
 import qs from "qs";
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-console.log(useRouter())
+// console.log(useRouter())
 const router = useRouter()
 //数据请求字符
 axios.defaults.baseURL = '/api/',
@@ -20,7 +20,7 @@ axios.defaults.timeout = 5000;
 axios.defaults.withCredentials = false;
 axios.defaults.headers.common['token'] =  ''
 // axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 // 允许跨域
 axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*";
 
