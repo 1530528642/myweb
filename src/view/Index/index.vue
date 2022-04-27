@@ -2,7 +2,7 @@
   <!-- <el-row class="tac">
     <el-col :span="12"> -->
       <div class="homes">
-                ``<el-menu
+                <el-menu
                   active-text-color="#ffd04b"
                   background-color="#545c64"
                   class="el-menu-vertical-demo"
@@ -38,18 +38,10 @@
                   </el-menu-item>
                 </el-menu>
                 <router-view/>
-<el-upload
-  class="upload-demo"
-  action="http://localhost:8080/api/goods/isimg"
-  multiple
-  :limit="3"
-  >
-  <el-button size="small" type="primary">点击上传</el-button>
-  </el-upload>
-        <!-- <el-upload action="http://localhost:8080/api/goods/isimg" list-type="picture-card"  :on-change="handleSuccess" > -->
-            <!-- <el-icon><Plus /></el-icon> -->
+        <el-upload action="#" list-type="picture-card"  :on-change="handleSuccess" :auto-upload="false">
+            <el-icon><Plus /></el-icon>
 
-            <!-- <template #file="{ file }">
+            <template #file="{ file }">
               <div>
                 <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
                 <span class="el-upload-list__item-actions">
@@ -75,8 +67,8 @@
                   </span>
                 </span>
               </div>
-            </template> -->
-          <!-- </el-upload> -->
+            </template>
+          </el-upload>
 
           <button style="height: 30px;" @click="sotoken">请求token是否过期</button>``
       </div>
@@ -98,14 +90,6 @@ import {
   Menu as IconMenu,
   Setting,
 } from '@element-plus/icons-vue'
-// interface  filetype {
-//   name: String;
-//   uid: Number;
-//   url?: any,
-//   percentage: Number,
-//   status: String,
-//   size: Number
-// }
   const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
   }
@@ -129,28 +113,11 @@ const handleDownload = (file: UploadFile) => {
 }
 
 const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-      // console.log(uploadFile.name,uploadFile.uid,uploadFile.url)
-      let filelis = {
-          name: uploadFile.name,
-          uid: uploadFile.uid,
-          url: uploadFile.url
-      }
-      
-      // let glos:filetype = uploadFile
       const data = new FormData()
-      data.append('file', filelis.toString())
-      //  axios.post('goods/isimg', data).then((res)=>{
-      //               console.log(res.data);
-      //           })
-        axios.post('goods/isimg', data,{headers: {'Content-Type': `multipart/form-data;boundary=--------------------------311160008983364231394048`}}).then((res)=>{
+      data.append('file', uploadFile.raw)
+      axios.post('goods/isimg', data).then((res)=>{
                     console.log(res.data);
                 })
-      // axios.post('goods/isimg', data).then(function(response){
-      //                   console.log(response)
-      //               })
-      //               .catch(function(err){
-      //                 console.log(err)
-      //       })
 }
 
   const sotoken = () => {
@@ -159,7 +126,6 @@ const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
                       ElMessage(response.data.msg)
                   } else {
                       ElMessage(response.data.msg)
-
                   }
           })
           .catch(function(err){

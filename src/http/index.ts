@@ -19,8 +19,7 @@ axios.defaults.timeout = 5000;
 // 表示跨域请求时是否需要使用凭证
 axios.defaults.withCredentials = false;
 axios.defaults.headers.common['token'] =  ''
-// axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 // 允许跨域
 axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*";
 
@@ -34,7 +33,7 @@ axios.interceptors.request.use(function (config) {
     config.method === "delete"
   ) {
     // qs序列化
-    config.data = qs.parse(config.data);
+    config.data instanceof FormData ?  config.data = config.data : config.data = qs.parse(config.data)
   }
   // 若是有做鉴权token , 就给头部带上token
   return config;
