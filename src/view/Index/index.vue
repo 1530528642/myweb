@@ -11,7 +11,20 @@
                   @open="handleOpen"
                   @close="handleClose"
                 >
-                  <el-sub-menu index="1">
+                 <el-sub-menu index="1">
+                    <template #title>
+                      <el-icon><location /></el-icon>
+                      <span>Navigator One</span>
+                    </template>
+                    <el-menu-item index="1-1">item one</el-menu-item>
+                    <el-menu-item index="1-2">item one</el-menu-item>
+                    <el-menu-item index="1-3">item three</el-menu-item>
+                    <el-sub-menu index="1-4">
+                      <template #title>item four</template>
+                      <el-menu-item index="1-4-1">item one</el-menu-item>
+                    </el-sub-menu>
+                  </el-sub-menu>
+                  <!-- <el-sub-menu index="1">
                     <template #title>
                       <el-icon><location /></el-icon>
                       <span>Navigator One</span>
@@ -35,7 +48,7 @@
                   <el-menu-item index="4">
                     <el-icon><setting /></el-icon>
                     <span>Navigator Four</span>
-                  </el-menu-item>
+                  </el-menu-item> -->
                 </el-menu>
                 <router-view/>
         <el-upload action="#" list-type="picture-card"  :on-change="handleSuccess" :auto-upload="false">
@@ -69,7 +82,7 @@
               </div>
             </template>
           </el-upload>
-
+          {{menulist}}
           <button style="height: 30px;" @click="sotoken">请求token是否过期</button>``
       </div>
 
@@ -78,7 +91,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue"
+import {ref, reactive, onMounted} from "vue"
 import axios from "axios"
 import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
@@ -96,7 +109,7 @@ import {
   const handleClose = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
   }
-
+let menulist = ref([])
 const dialogImageUrl = ref('')
 const disabled = ref(false)
 
@@ -116,9 +129,18 @@ const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
       const data = new FormData()
       data.append('file', uploadFile.raw)
       axios.post('goods/isimg', data).then((res)=>{
-                    console.log(res.data);
+                    console.log(res.data)
                 })
 }
+onMounted(()=>{
+  axios.post('menus/getmenuslist', {}).then(function(response){
+                 menulist.value = response.data.data
+                 console.log(menulist)
+          })
+          .catch(function(err){
+            console.log(err)
+  })
+})
 
   const sotoken = () => {
       axios.post('users/getpage', {}).then(function(response){
