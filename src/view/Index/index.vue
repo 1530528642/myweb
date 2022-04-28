@@ -11,46 +11,28 @@
                   @open="handleOpen"
                   @close="handleClose"
                 >
-                 <el-sub-menu index="1">
-                    <template #title>
-                      <el-icon><location /></el-icon>
-                      <span>Navigator One</span>
-                    </template>
-                    <el-menu-item index="1-1">item one</el-menu-item>
-                    <el-menu-item index="1-2">item one</el-menu-item>
-                    <el-menu-item index="1-3">item three</el-menu-item>
-                    <el-sub-menu index="1-4">
-                      <template #title>item four</template>
-                      <el-menu-item index="1-4-1">item one</el-menu-item>
-                    </el-sub-menu>
-                  </el-sub-menu>
-                  <!-- <el-sub-menu index="1">
-                    <template #title>
-                      <el-icon><location /></el-icon>
-                      <span>Navigator One</span>
-                    </template>
-                    <el-menu-item index="1-1">item one</el-menu-item>
-                    <el-menu-item index="1-2">item one</el-menu-item>
-                    <el-menu-item index="1-3">item three</el-menu-item>
-                    <el-sub-menu index="1-4">
-                      <template #title>item four</template>
-                      <el-menu-item index="1-4-1">item one</el-menu-item>
-                    </el-sub-menu>
-                  </el-sub-menu>
-                  <el-menu-item index="2">
-                    <el-icon><icon-menu /></el-icon>
-                    <span>Navigator Two</span>
-                  </el-menu-item>
-                  <el-menu-item index="3" disabled>
-                    <el-icon><document /></el-icon>
-                    <span>Navigator Three</span>
-                  </el-menu-item>
-                  <el-menu-item index="4">
-                    <el-icon><setting /></el-icon>
-                    <span>Navigator Four</span>
-                  </el-menu-item> -->
+                    <div v-for="(items, index) in menulist" :key="index">
+                        <el-sub-menu :index="index">
+                                <template #title>
+                                  <el-icon><location /></el-icon>
+                                  <span>{{items.name}}</span>
+                                </template>
+                              <div v-for="(itemss, indess) in items.children" :key="indess">
+                                  <el-menu-item-group :title="itemss.name">
+                                    <el-menu-item v-for="(itemsss, indesss) in itemss.children" :key="indesss">
+                                      {{itemsss.name}}
+                                    </el-menu-item>
+                                  </el-menu-item-group>
+                              </div>
+                        </el-sub-menu>
+
+                        <!-- <el-menu-item :index="index">
+                          <span>{{items.name}}</span>
+                        </el-menu-item> -->
+                    </div>
                 </el-menu>
                 <router-view/>
+
         <el-upload action="#" list-type="picture-card"  :on-change="handleSuccess" :auto-upload="false">
             <el-icon><Plus /></el-icon>
 
@@ -82,7 +64,7 @@
               </div>
             </template>
           </el-upload>
-          {{menulist}}
+
           <button style="height: 30px;" @click="sotoken">请求token是否过期</button>``
       </div>
 
@@ -104,10 +86,10 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
   const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
+    // console.log(key, keyPath)
   }
   const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
+    // console.log(key, keyPath)
   }
 let menulist = ref([])
 const dialogImageUrl = ref('')
@@ -135,14 +117,14 @@ const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
 onMounted(()=>{
   axios.post('menus/getmenuslist', {}).then(function(response){
                  menulist.value = response.data.data
-                 console.log(menulist)
+                //  console.log(menulist)
           })
           .catch(function(err){
             console.log(err)
   })
 })
 
-  const sotoken = () => {
+const sotoken = () => {
       axios.post('users/getpage', {}).then(function(response){
                   if (response.data.status !== 200) {
                       ElMessage(response.data.msg)
@@ -151,9 +133,9 @@ onMounted(()=>{
                   }
           })
           .catch(function(err){
-            console.log(err)
+            console.log(err, 99999999)
       })
-  }
+}
 </script>
 
 <style>

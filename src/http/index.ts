@@ -45,7 +45,7 @@ axios.interceptors.request.use(function (config) {
 // 响应拦截器
 axios.interceptors.response.use(function (config) {
   if (config.status === 200 || config.status === 204) {
-    console.log(config.data.status)
+    // console.log(config.data.status)
     if(config.data.status === 300){
       console.log(router)
       router.push('/Login')
