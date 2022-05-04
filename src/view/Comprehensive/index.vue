@@ -2,7 +2,7 @@
   <!-- <el-row class="tac">
     <el-col :span="12"> -->
       <div class="homes">
-                <el-menu
+                <!-- <el-menu
                   active-text-color="#ffd04b"
                   background-color="#545c64"
                   class="el-menu-vertical-demo"
@@ -12,25 +12,30 @@
                   @close="handleClose"
                 >
                     <div v-for="(items, index) in menulist" :key="index">
-                        <el-sub-menu :index="index">
+                        <el-sub-menu :index="items.url" v-if="items.children.length > 0">
                                 <template #title>
                                   <el-icon><location /></el-icon>
                                   <span>{{items.name}}</span>
                                 </template>
                               <div v-for="(itemss, indess) in items.children" :key="indess">
-                                  <el-menu-item-group :title="itemss.name">
-                                    <el-menu-item v-for="(itemsss, indesss) in itemss.children" :key="indesss">
+                                <el-sub-menu  :index="items.url+1" v-if="itemss.children.length > 0">
+                                      <template #title>
+                                        <span>{{itemss.name}}</span>
+                                      </template>
+                                    <el-menu-item v-for="(itemsss, indesss) in itemss.children"  :index="itemsss.url"  :key="indesss">
                                       {{itemsss.name}}
                                     </el-menu-item>
-                                  </el-menu-item-group>
+                                </el-sub-menu>
+                              <el-menu-item  :index="itemss.url+1" v-else>
+                                      {{itemss.name}}
+                                </el-menu-item>
                               </div>
                         </el-sub-menu>
-
-                        <!-- <el-menu-item :index="index">
+                        <el-menu-item :index="items.url" v-else>
                           <span>{{items.name}}</span>
-                        </el-menu-item> -->
+                        </el-menu-item>
                     </div>
-                </el-menu>
+                </el-menu> -->
                 <router-view/>
 
         <el-upload action="#" list-type="picture-card"  :on-change="handleSuccess" :auto-upload="false">
@@ -38,33 +43,10 @@
 
             <template #file="{ file }">
               <div>
-                <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-preview"
-                    @click="handlePictureCardPreview(file)"
-                  >
-                    <el-icon><zoom-in /></el-icon>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleDownload(file)"
-                  >
-                    <el-icon><Download /></el-icon>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <el-icon><Delete /></el-icon>
-                  </span>
-                </span>
+                  <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
               </div>
             </template>
           </el-upload>
-
           <button style="height: 30px;" @click="sotoken">请求token是否过期</button>``
       </div>
 
@@ -86,43 +68,34 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
   const handleOpen = (key: string, keyPath: string[]) => {
-    // console.log(key, keyPath)
+    console.log(key, keyPath)
   }
   const handleClose = (key: string, keyPath: string[]) => {
-    // console.log(key, keyPath)
+    console.log(key, keyPath)
   }
-let menulist = ref([])
-const dialogImageUrl = ref('')
-const disabled = ref(false)
 
-const handleRemove = (file: UploadFile) => {
-  console.log(file)
+// let menulist = ref([])
+interface fileType {
+
 }
-
-const handlePictureCardPreview = (file: UploadFile) => {
-  dialogImageUrl.value = file.url!
-}
-
-const handleDownload = (file: UploadFile) => {
-  console.log(file)
-}
-
 const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
       const data = new FormData()
+      console.log(uploadFile.raw)
+      console.log(uploadFile)
       data.append('file', uploadFile.raw)
       axios.post('goods/isimg', data).then((res)=>{
                     console.log(res.data)
                 })
 }
-onMounted(()=>{
-  axios.post('menus/getmenuslist', {}).then(function(response){
-                 menulist.value = response.data.data
-                //  console.log(menulist)
-          })
-          .catch(function(err){
-            console.log(err)
-  })
-})
+
+// onMounted(()=>{
+//   axios.post('menus/getmenuslist', {}).then(function(response){
+//                 menulist.value = response.data.data
+//           })
+//           .catch(function(err){
+//             console.log(err)
+//   })
+// })
 
 const sotoken = () => {
       axios.post('users/getpage', {}).then(function(response){
@@ -145,7 +118,7 @@ const sotoken = () => {
   display: flex;
 }
 .el-menu-vertical-demo{
-  width: 250px;
+  width: 210px;
   height: 100%;
   display: inline-block;
 }
