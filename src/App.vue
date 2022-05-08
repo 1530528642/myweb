@@ -2,7 +2,7 @@
    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
   <!--<HelloWorld msg="Hello Vue 3 + TypeScript + Vite" /> -->
   <div class="is_app">
-      <el-menu
+      <!-- <el-menu
                   active-text-color="#ffd04b"
                   background-color="#545c64"
                   class="el-menu-vertical-demo"
@@ -26,33 +26,39 @@
                                       {{itemsss.name}}
                                     </el-menu-item>
                                 </el-sub-menu>
-                              <el-menu-item  :index="itemss.url+1" v-else>
+                              <el-menu-item  :index="itemss.url" v-else>
                                       {{itemss.name}}
-                                </el-menu-item>
+                              </el-menu-item>
                               </div>
                         </el-sub-menu>
                         <el-menu-item :index="items.url" v-else>
                           <span>{{items.name}}</span>
                         </el-menu-item>
                     </div>
-      </el-menu>
+      </el-menu> -->
+      <router-view></router-view>
   </div>
-  <router-view></router-view>
+  
 </template>
 <script setup lang="ts">
-import {ref, reactive, onMounted} from "vue"
-import axios from "axios"
-import { Location,Document,Menu as IconMenu,Setting } from '@element-plus/icons-vue'
-
-  let menulist = ref([])
-  onMounted(()=>{
-  axios.post('menus/getmenuslist', {}).then(function(response){
-                menulist.value = response.data.data
-          })
-          .catch(function(err){
-            console.log(err)
-  })
-})
+// import {ref, reactive, onMounted} from "vue"
+// import axios from "axios"
+// import { Location,Document,Menu as IconMenu,Setting } from '@element-plus/icons-vue'
+//  const handleOpen = (key: string, keyPath: string[]) => {
+//     console.log(key, keyPath)
+//   }
+//   const handleClose = (key: string, keyPath: string[]) => {
+//     console.log(key, keyPath)
+//   }
+//   let menulist = ref([])
+//   onMounted(()=>{
+//   axios.post('menus/getmenuslist', {}).then(function(response){
+//                 menulist.value = response.data.data
+//           })
+//           .catch(function(err){
+//             console.log(err)
+//   })
+// })
 </script>
 <style>
 #app {

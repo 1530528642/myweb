@@ -63,7 +63,7 @@ const submitForm = (formEl: FormInstance | undefined, type: number) => {
                 } else {
                     ElMessage(response.data.msg)
                     localStorage.setItem('token', response.data.token)
-                    router.push('/index')
+                    router.push('/')
                 }
               })
               .catch(function(err){

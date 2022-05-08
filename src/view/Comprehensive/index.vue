@@ -2,14 +2,13 @@
   <!-- <el-row class="tac">
     <el-col :span="12"> -->
       <div class="homes">
-                <!-- <el-menu
+                <el-menu
                   active-text-color="#ffd04b"
                   background-color="#545c64"
                   class="el-menu-vertical-demo"
-                  default-active="2"
+                  :default-active="defaultActive"
                   text-color="#fff"
-                  @open="handleOpen"
-                  @close="handleClose"
+                  router="true"
                 >
                     <div v-for="(items, index) in menulist" :key="index">
                         <el-sub-menu :index="items.url" v-if="items.children.length > 0">
@@ -26,28 +25,17 @@
                                       {{itemsss.name}}
                                     </el-menu-item>
                                 </el-sub-menu>
-                              <el-menu-item  :index="itemss.url+1" v-else>
+                              <el-menu-item  :index="itemss.url" v-else>
                                       {{itemss.name}}
-                                </el-menu-item>
+                              </el-menu-item>
                               </div>
                         </el-sub-menu>
                         <el-menu-item :index="items.url" v-else>
                           <span>{{items.name}}</span>
                         </el-menu-item>
                     </div>
-                </el-menu> -->
+                </el-menu>
                 <router-view/>
-
-        <el-upload action="#" list-type="picture-card"  :on-change="handleSuccess" :auto-upload="false">
-            <el-icon><Plus /></el-icon>
-
-            <template #file="{ file }">
-              <div>
-                  <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-              </div>
-            </template>
-          </el-upload>
-          <button style="height: 30px;" @click="sotoken">请求token是否过期</button>``
       </div>
 
     <!-- </el-col>
@@ -67,48 +55,39 @@ import {
   Menu as IconMenu,
   Setting,
 } from '@element-plus/icons-vue'
-  const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-  }
-  const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-  }
 
-// let menulist = ref([])
-interface fileType {
+const defaultActive = ref('/dataUpload')
 
+let menulist: any= ref([])
+
+let menudata: any = ref({
+  dataUpload: '/dataUpload',
+  lineStatistics: '/lineStatistics',
+  menuone: '/serviceCentre/menuone'
+})
+
+const recursion = (data:any[]) => {
+  data.forEach(it => {
+      if(it.children && it.children.length > 0) {
+          recursion(it.children)
+      } else {
+        it.url = menudata.value[it.url]
+      }
+  })
+  return data
 }
-const handleSuccess = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-      const data = new FormData()
-      console.log(uploadFile.raw)
-      console.log(uploadFile)
-      data.append('file', uploadFile.raw)
-      axios.post('goods/isimg', data).then((res)=>{
-                    console.log(res.data)
-                })
-}
 
-// onMounted(()=>{
-//   axios.post('menus/getmenuslist', {}).then(function(response){
-//                 menulist.value = response.data.data
-//           })
-//           .catch(function(err){
-//             console.log(err)
-//   })
-// })
-
-const sotoken = () => {
-      axios.post('users/getpage', {}).then(function(response){
-                  if (response.data.status !== 200) {
-                      ElMessage(response.data.msg)
-                  } else {
-                      ElMessage(response.data.msg)
-                  }
+onMounted(()=>{
+  axios.post('menus/getmenuslist', {}).then(function(response){
+                menulist.value = recursion(response.data.data)
           })
           .catch(function(err){
-            console.log(err, 99999999)
-      })
-}
+            console.log(err)
+  })
+})
+
+
+
 </script>
 
 <style>
