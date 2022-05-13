@@ -44,11 +44,12 @@
 
 <script lang="ts" setup>
 import {ref, reactive, onMounted} from "vue"
-import axios from "axios"
+// import axios from "axios"
 import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadFiles } from 'element-plus'
-
+import serveapi from "../../http/api"
+console.log(serveapi)
 import {
   Location,
   Document,
@@ -78,16 +79,13 @@ const recursion = (data:any[]) => {
 }
 
 onMounted(()=>{
-  axios.post('menus/getmenuslist', {}).then(function(response){
+  serveapi.getmenuslist({}).then(function(response: any){
                 menulist.value = recursion(response.data.data)
           })
-          .catch(function(err){
+          .catch(function(err: any){
             console.log(err)
   })
 })
-
-
-
 </script>
 
 <style>

@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'  //引入vue-router
 import routes from './routes'
 const router = createRouter({
-    history: createWebHistory(),  
+    history: createWebHistory(),
     routes
 })
 
@@ -14,5 +14,5 @@ router.beforeEach((to, form, next) => {
       next()
     }
   })
-  
+
 export default router

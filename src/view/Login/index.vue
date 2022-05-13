@@ -36,7 +36,8 @@
 import { ref, reactive} from "vue"
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import axios from "axios"
+// import axios from "axios"
+import serveapi from "../../http/api"
 import { useRouter } from 'vue-router'
 let router = useRouter()
 
@@ -57,7 +58,7 @@ const submitForm = (formEl: FormInstance | undefined, type: number) => {
       formEl.validate((valid) => {
         if (valid) {
           if(type === 1){
-              axios.post('users/bar', ruleForm).then(function(response){
+              serveapi.bar(ruleForm).then(function(response: any){
                 if (response.data.status !== 200) {
                     ElMessage(response.data.msg)
                 } else {
@@ -66,20 +67,19 @@ const submitForm = (formEl: FormInstance | undefined, type: number) => {
                     router.push('/')
                 }
               })
-              .catch(function(err){
+              .catch(function(err: any){
                 console.log(err)
               })
           } else {
-               axios.post('users/addUser', ruleForm).then(function(response){
+              serveapi.addUser(ruleForm).then(function(response: any){
                 if (response.data.data.length === 0) {
                     ElMessage(response.data.msg)
                 }
               })
-              .catch(function(err){
+              .catch(function(err: any){
                 console.log(err)
               })
           }
-        
         } else {
           console.log('error submit!')
           return false
