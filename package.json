@@ -11,11 +11,13 @@
     "axios": "^0.26.1",
     "element-plus": "^2.1.4",
     "qs": "^6.10.3",
+    "spark-md5": "^3.0.2",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",
+    "@types/spark-md5": "^3.0.2",
     "@vitejs/plugin-vue": "^2.2.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
